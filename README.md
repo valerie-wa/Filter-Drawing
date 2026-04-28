@@ -1,4 +1,4 @@
-# Jarvis
+# 2d Drawing to Face Filter
 
 Real-time hand tracking + face filtering built with MediaPipe, OpenCV, and Sobel edge detection.
 
