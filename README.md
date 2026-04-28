@@ -1,19 +1,18 @@
 # Jarvis
 
-Real-time hand tracking + voice command system built with MediaPipe, OpenCV, and Sobel edge detection.
+Real-time hand tracking + face filtering built with MediaPipe, OpenCV, and Sobel edge detection.
 
 ## What it does
 
 - Detects hand landmarks in real time via webcam or video file
 - Tracks index fingertip position with Sobel edge refinement
-- Listens for voice commands and maps them to actions
+- Maps drawn image onto face using Mediapipe polygons
 - Logs all recognized commands to `app/data/logs/commands.txt`
 
 ## Stack
 
 - [OpenCV](https://opencv.org/) — camera pipeline + image processing
 - [MediaPipe](https://mediapipe.dev/) — hand landmark detection
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) — voice input
 - NumPy — array ops
 
 ## Setup
@@ -44,7 +43,6 @@ All settings are in [`app/utils/config.py`](app/utils/config.py):
 |---|---|---|
 | `CAMERA_INDEX` | `0` | Webcam index |
 | `USE_WEBCAM` | `True` | Set `False` to use a video file |
-| `ENABLE_VOICE` | `True` | Toggle mic input |
 | `COMMAND_COOLDOWN` | `2` | Seconds between commands |
 | `EDGE_REGION_SIZE` | `80` | Sobel crop box size around fingertip |
 
@@ -70,11 +68,17 @@ Add your own in [`app/core/command_parser.py`](app/core/command_parser.py).
 
 ```
 app/
+  assets/
+    toolbar.PNG — toolbar overlay
   core/
+    face_detecion.py    — Mediapipe
+    filter_video_pipeline.py — video pipeline for face filtering
     video_pipeline.py   — main loop
     hand_detection.py   — MediaPipe + Sobel
     command_parser.py   — text → command
     voice_input.py      — mic → text (threaded)
+  processing/
+    drawing.py          — ui and 2d drawing
   utils/
     config.py           — all settings
     helpers.py          — FPS, smoothing, logger
